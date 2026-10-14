@@ -1,0 +1,184 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lasso — Free Offline AI Background Remover</title>
+<meta name="description" content="Remove the background from any image in seconds. AI that runs on your own PC — free, unlimited, no uploads. For Windows.">
+<meta property="og:title" content="Lasso — Free Offline AI Background Remover">
+<meta property="og:description" content="Remove backgrounds with AI that runs on your own PC. Free and unlimited.">
+<meta property="og:image" content="screenshot.jpg">
+<link rel="icon" href="favicon.png">
+<style>
+:root {
+  --bg: #0b0c0f; --card: rgba(255,255,255,.035); --line: rgba(255,255,255,.08); --line-2: rgba(255,255,255,.14);
+  --text: #edf5ef; --muted: #96a39c; --faint: #5f6b65; --violet: #4ade80; --violet-2: #bef264; --cyan: #10b981;
+  --grad: linear-gradient(135deg, #bef264 0%, #4ade80 45%, #10b981 100%);
+  --font: "Segoe UI Variable Text", "Segoe UI", Inter, system-ui, -apple-system, sans-serif;
+  --display: "Segoe UI Variable Display", "Segoe UI", Inter, system-ui, -apple-system, sans-serif;
+}
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body { margin: 0; background: var(--bg); color: var(--text); font-family: var(--font); font-size: 16px; line-height: 1.55; -webkit-font-smoothing: antialiased; overflow-x: hidden; }
+a { color: inherit; }
+.bg { position: fixed; inset: 0; z-index: -1; pointer-events: none; overflow: hidden; }
+.blob { position: absolute; border-radius: 50%; filter: blur(110px); opacity: .5; }
+.b1 { width: 720px; height: 720px; left: -220px; top: -280px; background: radial-gradient(circle, #166534, transparent 70%); animation: drift 26s ease-in-out infinite alternate; }
+.b2 { width: 640px; height: 640px; right: -200px; top: 380px; background: radial-gradient(circle, #065f46, transparent 70%); animation: drift 34s ease-in-out infinite alternate-reverse; }
+@keyframes drift { to { transform: translate(70px, 50px) scale(1.08); } }
+.wrap { max-width: 1120px; margin: 0 auto; padding: 0 22px; }
+
+nav { display: flex; align-items: center; justify-content: space-between; padding: 22px 0; }
+.brand { display: flex; align-items: center; gap: 10px; text-decoration: none; font-family: var(--display); font-weight: 700; font-size: 19px; }
+.brand img { width: 32px; height: 32px; }
+.tag { font-size: 11px; font-weight: 650; letter-spacing: .6px; text-transform: uppercase; color: var(--violet-2); background: rgba(74,222,128,.14); border: 1px solid rgba(74,222,128,.3); padding: 2px 8px; border-radius: 99px; }
+.nav-links { display: flex; gap: 26px; font-size: 14.5px; color: var(--muted); }
+.nav-links a { text-decoration: none; transition: color .15s; }
+.nav-links a:hover { color: var(--text); }
+
+.hero { text-align: center; padding: 70px 0 40px; }
+.hero .app-icon { width: 104px; height: 104px; filter: drop-shadow(0 18px 40px rgba(74,222,128,.55)); animation: float 6s ease-in-out infinite; }
+@keyframes float { 50% { transform: translateY(-8px); } }
+h1 { font-family: var(--display); font-size: clamp(40px, 7vw, 72px); line-height: 1.04; letter-spacing: -1.5px; margin: 26px 0 18px; font-weight: 750; }
+h1 .grad { background: var(--grad); -webkit-background-clip: text; background-clip: text; color: transparent; }
+.lede { max-width: 620px; margin: 0 auto; color: var(--muted); font-size: clamp(16px, 2.2vw, 19px); }
+.cta { margin-top: 34px; display: flex; flex-direction: column; align-items: center; gap: 12px; }
+.btn { display: inline-flex; align-items: center; gap: 11px; padding: 16px 30px; border-radius: 16px; background: var(--grad); color: #0b0c0f; font-weight: 650; font-size: 17px; text-decoration: none; border: 0; cursor: pointer; box-shadow: 0 14px 40px -10px rgba(74,222,128,.85); transition: transform .15s, filter .15s, box-shadow .15s; }
+.btn:hover { transform: translateY(-2px); filter: brightness(1.08); box-shadow: 0 20px 50px -10px rgba(74,222,128,.95); }
+.btn svg { width: 22px; height: 22px; }
+.btn.ghost { background: var(--card); border: 1px solid var(--line-2); box-shadow: none; font-size: 15px; padding: 12px 22px; }
+.meta { font-size: 13.5px; color: var(--faint); }
+.meta b { color: var(--muted); font-weight: 600; }
+
+.shot { position: relative; margin: 60px auto 0; max-width: 1040px; }
+.shot::before { content: ""; position: absolute; inset: 8% 10% -4%; background: var(--grad); filter: blur(80px); opacity: .35; z-index: -1; border-radius: 40px; }
+.shot img { width: 100%; display: block; border-radius: 16px; border: 1px solid var(--line-2); box-shadow: 0 40px 100px -30px rgba(0,0,0,.9); }
+
+section { padding: 100px 0 0; }
+.eyebrow { text-align: center; font-size: 13px; font-weight: 700; letter-spacing: 1.2px; text-transform: uppercase; color: var(--violet-2); }
+h2 { text-align: center; font-family: var(--display); font-size: clamp(30px, 4.5vw, 44px); letter-spacing: -.8px; margin: 10px 0 14px; line-height: 1.1; }
+.sub { text-align: center; color: var(--muted); max-width: 560px; margin: 0 auto 46px; }
+
+.grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+.card { background: var(--card); border: 1px solid var(--line); border-radius: 20px; padding: 26px; transition: border-color .2s, transform .2s; }
+.card:hover { border-color: rgba(167,139,250,.35); transform: translateY(-3px); }
+.ico { width: 44px; height: 44px; border-radius: 13px; background: var(--grad); display: grid; place-items: center; margin-bottom: 18px; box-shadow: 0 8px 22px -8px rgba(74,222,128,.9); }
+.ico svg { width: 22px; height: 22px; stroke: #0b0c0f; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.card h3 { margin: 0 0 8px; font-family: var(--display); font-size: 18.5px; }
+.card p { margin: 0; color: var(--muted); font-size: 15px; }
+
+.steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; counter-reset: s; }
+.step { position: relative; background: var(--card); border: 1px solid var(--line); border-radius: 20px; padding: 28px 24px 24px; }
+.step::before { counter-increment: s; content: counter(s); position: absolute; top: -16px; left: 24px; width: 34px; height: 34px; border-radius: 50%; background: var(--grad); display: grid; place-items: center; font-weight: 750; font-family: var(--display); color: #0b0c0f; box-shadow: 0 6px 18px -6px rgba(74,222,128,.9); }
+.step h3 { margin: 6px 0 8px; font-family: var(--display); font-size: 18px; }
+.step p { margin: 0; color: var(--muted); font-size: 15px; }
+.note { margin: 18px auto 0; max-width: 760px; display: flex; gap: 14px; align-items: flex-start; padding: 16px 20px; border-radius: 16px; background: rgba(190,242,100,.05); border: 1px solid rgba(190,242,100,.22); font-size: 14.5px; color: #dcefc8; }
+.note svg { flex: none; width: 22px; height: 22px; stroke: var(--cyan); fill: none; stroke-width: 2; margin-top: 1px; }
+kbd { font-family: inherit; font-size: 13px; padding: 1px 7px; border-radius: 6px; background: rgba(255,255,255,.08); border: 1px solid var(--line-2); }
+
+.faq { max-width: 760px; margin: 0 auto; display: flex; flex-direction: column; gap: 10px; }
+details { background: var(--card); border: 1px solid var(--line); border-radius: 16px; padding: 4px 22px; }
+summary { cursor: pointer; list-style: none; padding: 16px 0; font-weight: 600; display: flex; justify-content: space-between; align-items: center; }
+summary::-webkit-details-marker { display: none; }
+summary::after { content: "+"; font-size: 22px; color: var(--muted); transition: transform .2s; }
+details[open] summary::after { transform: rotate(45deg); }
+details p { margin: 0 0 18px; color: var(--muted); font-size: 15px; }
+
+.final { text-align: center; padding: 110px 0 40px; }
+.final h2 { margin-bottom: 26px; }
+footer { border-top: 1px solid var(--line); margin-top: 80px; padding: 28px 0 40px; display: flex; justify-content: space-between; color: var(--faint); font-size: 14px; flex-wrap: wrap; gap: 10px; }
+
+@media (max-width: 860px) { .grid, .steps { grid-template-columns: 1fr; } .nav-links { display: none; } .steps { gap: 30px; } }
+@media (prefers-reduced-motion: reduce) { * { animation: none !important; } }
+</style>
+</head>
+<body>
+<div class="bg"><i class="blob b1"></i><i class="blob b2"></i></div>
+
+<div class="wrap">
+  <nav>
+    <a class="brand" href="#"><img src="favicon.png" alt="">Lasso <span class="tag">AI Cutout</span></a>
+    <div class="nav-links"><a href="#features">Features</a><a href="#install">Install</a><a href="#faq">FAQ</a></div>
+  </nav>
+
+  <header class="hero">
+    <img class="app-icon" src="icon.png" alt="Lasso app icon">
+    <h1>Remove any background.<br><span class="grad">Free. Forever.</span></h1>
+    <p class="lede">Lasso uses AI that runs on your own PC to cut out people, products and pets in seconds. No uploads, no limits, no watermark.</p>
+    <div class="cta">
+      <a class="btn dl" href="#">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12m0 0 5-5m-5 5-5-5"/><path d="M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2"/></svg>
+        Download for Windows
+      </a>
+      <span class="meta"><b>Version <span class="ver">1.0.0</span></b> · Windows 10 &amp; 11 · 64-bit · ~125 MB</span>
+    </div>
+    <div class="shot"><img src="screenshot.jpg" alt="Lasso comparing a photo before and after background removal" loading="eager"></div>
+  </header>
+
+  <section id="features">
+    <div class="eyebrow">Features</div>
+    <h2>Everything the paid removers do — offline</h2>
+    <p class="sub">Drop in one photo or a hundred. Everything runs on your PC — your images never leave it.</p>
+    <div class="grid">
+      <div class="card"><div class="ico"><svg viewBox="0 0 24 24"><path d="M12 3l2.2 5.8L20 11l-5.8 2.2L12 19l-2.2-5.8L4 11l5.8-2.2z"/></svg></div><h3>AI on your PC</h3><p>Two AI engines built in. On PCs with a graphics card or plenty of RAM, Lasso picks the sharpest one for hair and fur automatically.</p></div>
+      <div class="card"><div class="ico"><svg viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h10"/></svg></div><h3>Batch mode</h3><p>Drop a whole folder. Lasso works through the queue and exports them all in one go.</p></div>
+      <div class="card"><div class="ico"><svg viewBox="0 0 24 24"><path d="M3 7V5a2 2 0 0 1 2-2h2M17 3h2a2 2 0 0 1 2 2v2M21 17v2a2 2 0 0 1-2 2h-2M7 21H5a2 2 0 0 1-2-2v-2"/><path d="M8 12h8"/></svg></div><h3>Right-click any image</h3><p>Choose "Remove background" in File Explorer — the cut-out is saved right next to the original. No app to open.</p></div>
+      <div class="card"><div class="ico"><svg viewBox="0 0 24 24"><path d="M9.06 11.9l8.07-8.06a2.85 2.85 0 1 1 4.03 4.03l-8.06 8.08"/><path d="M7.07 14.94c-1.66 0-3 1.35-3 3.02 0 1.33-2.5 1.52-2 2.02 1.08 1.1 2.49 2.02 4 2.02 2.2 0 4-1.8 4-4.04a3.01 3.01 0 0 0-3-3.02z"/></svg></div><h3>Touch-up brush</h3><p>Erase leftovers or restore anything the AI missed, with soft edges and unlimited undo.</p></div>
+      <div class="card"><div class="ico"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="4"/><path d="M3 15l5-5 9 9"/></svg></div><h3>New backgrounds</h3><p>Transparent, solid colours, gradients, a blurred version of the original, or your own image.</p></div>
+      <div class="card"><div class="ico"><svg viewBox="0 0 24 24"><circle cx="10" cy="10" r="6"/><circle cx="14" cy="14" r="6"/></svg></div><h3>Shadows &amp; stickers</h3><p>Add a soft drop shadow or a sticker-style outline, auto-crop to the subject, and export PNG, WebP or JPG.</p></div>
+    </div>
+  </section>
+
+  <section id="install">
+    <div class="eyebrow">Install</div>
+    <h2>Up and running in a minute</h2>
+    <p class="sub">Three steps. No account needed.</p>
+    <div class="steps">
+      <div class="step"><h3>Download</h3><p>Click <b>Download for Windows</b> above. You'll get <b>Lasso-Setup.exe</b>.</p></div>
+      <div class="step"><h3>Run the installer</h3><p>Open it and click through the setup — pick a folder or keep the default. Lasso opens when it's done.</p></div>
+      <div class="step"><h3>Cut it out</h3><p>On first launch Lasso downloads its AI once. Then drop in images — or right-click one — and export.</p></div>
+    </div>
+    <div class="note">
+      <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9.5"/><path d="M12 7.5v5.5M12 16.5v.01"/></svg>
+      <span>If Windows shows <b>"Windows protected your PC"</b>, click <kbd>More info</kbd> then <kbd>Run anyway</kbd>. That appears for new apps from independent developers that aren't code-signed yet.</span>
+    </div>
+  </section>
+
+  <section id="faq">
+    <div class="eyebrow">FAQ</div>
+    <h2>Questions</h2>
+    <div class="faq" style="margin-top:40px">
+      <details><summary>Is Lasso really free?</summary><p>Yes — no account, no credits, no watermark and no limit on how many images you process.</p></details>
+      <details><summary>Are my images uploaded anywhere?</summary><p>No. The AI runs on your own PC. The only download is the AI itself, once, the first time you open Lasso. After that it works with no internet at all.</p></details>
+      <details><summary>How fast is it?</summary><p>Usually 1–3 seconds per image. On PCs with a graphics card or 16 GB+ of RAM, Best quality uses a sharper engine for hair and fur, which can take a few seconds longer.</p></details>
+      <details><summary>Where's the right-click option on Windows 11?</summary><p>Right-click an image, choose <b>Show more options</b>, then <b>Remove background</b>. The result is saved next to the original as "name (no bg).png".</p></details>
+      <details><summary>Does it work on Mac?</summary><p>Right now Lasso is Windows 10 and 11 only.</p></details>
+    </div>
+  </section>
+
+  <div class="final">
+    <h2>Cut out your first image in seconds.</h2>
+    <a class="btn dl" href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12m0 0 5-5m-5 5-5-5"/><path d="M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2"/></svg>Download for Windows</a>
+  </div>
+
+  <footer><span>© 2026 Trivisto · Lasso</span><span><a class="gh" href="#">Release notes &amp; older versions</a></span></footer>
+</div>
+
+<script>
+// Works automatically on GitHub Pages: https://USERNAME.github.io/REPO/
+// -> download link: https://github.com/USERNAME/REPO/releases/latest/download/Lasso-Setup.exe
+(function () {
+  var host = location.hostname, m = host.match(/^([^.]+)\.github\.io$/);
+  if (!m) return;
+  var user = m[1], repo = location.pathname.split('/').filter(Boolean)[0] || (user + '.github.io');
+  var base = 'https://github.com/' + user + '/' + repo + '/releases';
+  document.querySelectorAll('a.dl').forEach(function (a) { a.href = base + '/latest/download/Lasso-Setup.exe'; });
+  document.querySelectorAll('a.gh').forEach(function (a) { a.href = base; });
+  fetch('https://api.github.com/repos/' + user + '/' + repo + '/releases/latest')
+    .then(function (r) { return r.ok ? r.json() : null; })
+    .then(function (j) { if (j && j.tag_name) document.querySelectorAll('.ver').forEach(function (e) { e.textContent = j.tag_name.replace(/^v/, ''); }); })
+    .catch(function () {});
+})();
+</script>
+</body>
+</html>
